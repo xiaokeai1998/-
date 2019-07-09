@@ -34,69 +34,69 @@
 
 <script>
 // 在srcipt中进行模块方法的引入
-import { login } from "@/api/user_api.js";
+import { login } from '@/api/user_api.js'
 export default {
-  data() {
+  data () {
     return {
       loginForm: {
-        username: "",
-        password: ""
+        username: '',
+        password: ''
       },
       rules: {
         username: [
-          { required: true, message: "请输入正确的用户名", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+          { required: true, message: '请输入正确的用户名', trigger: 'blur' }
+          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: "请输入正确的密码", trigger: "blur" },
-          { min: 6, max: 16, message: "数字在6到16之间", trigger: "blur" }
+          { required: true, message: '请输入正确的密码', trigger: 'blur' },
+          { min: 6, max: 16, message: '数字在6到16之间', trigger: 'blur' }
         ]
       }
-    };
+    }
   },
 
   methods: {
-    loginsubmit() {
+    loginsubmit () {
       // 再次实现用户数据的验证
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           // 调用接口方法实现用户登录
-          console.log(login, "login借口");
+          // console.log(login, 'login借口')
           login(this.loginForm)
             .then(res => {
-              console.log(res);
+              // console.log(res)
               if (res.data.meta.status === 200) {
                 //  将token数据储存到本地
-                console.log(res.data.data.token, "token回归给 ");
-                localStorage.setItem("our_per_token", res.data.data.token);
-                console.log(
-                  localStorage.getItem("our_per_token"),
-                  "token存好了 "
-                );
+                // console.log(res.data.data.token, "token回归给 ");
+                localStorage.setItem('our_per_token', res.data.data.token)
+                // console.log(
+                //   localStorage.getItem('our_per_token'),
+                //   'token存好了 '
+                // )
                 // 跳转
-                this.$router.push({ name: "home" });
+                this.$router.push({ name: 'home' })
               } else {
                 this.$message({
-                  type: "warning",
+                  type: 'warning',
                   message: res.data.meta.msg
-                });
+                })
               }
             })
             .catch(err => {
-              console.log(err);
-            });
+              console.log(err)
+            })
         } else {
           this.$message({
-            type: "error",
-            message: "数据输入错误，请重新输入"
-          });
+            type: 'error',
+            message: '数据输入错误，请重新输入'
+          })
           // 一定要return false，否则不能真正的阻止
-          return false;
+          return false
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .login {
