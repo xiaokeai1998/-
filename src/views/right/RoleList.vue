@@ -158,12 +158,12 @@ export default {
   methods: {
 
     // 删除角色
-    // delrole (id) {
-    //   delRightForRole(id)
-    //     .then(res => {
-    //       console.log(id)
-    //     })
-    // },
+    delrole (id) {
+      delRightForRole(id)
+        .then(res => {
+          console.log(id)
+        })
+    },
     // 添加角色对话框
     addRole () {
       addRightForRole(this.addFrom)

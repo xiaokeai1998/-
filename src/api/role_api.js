@@ -32,9 +32,9 @@ export const addRightForRole = (data) => {
 }
 
 // 删除角色
-// export const delRightForRole = (id) => {
-//   return axios({
-//     url: `roles/${id}`,
-//     method: 'delete'
-//   })
-// }
+export const delRightForRole = (id) => {
+  return axios({
+    url: `roles/${id}`,
+    method: 'delete'
+  })
+}
