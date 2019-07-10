@@ -161,7 +161,14 @@ export default {
     delrole (id) {
       delRightForRole(id)
         .then(res => {
-          console.log(id)
+          console.log(res)
+          if (res.data.meta.status === 200) {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+            this.init()
+          }
         })
     },
     // 添加角色对话框

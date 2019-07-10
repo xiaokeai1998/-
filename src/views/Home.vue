@@ -17,34 +17,17 @@
           active-text-color="#ffd04b"
         >
           <!-- 用户信息 -->
-          <el-submenu index="1">
+            <el-submenu :index="first.id+''" v-for='first in menuList' :key='first.id'>
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>{{first.authName}}</span>
             </template>
-            <el-menu-item-group>
-              <el-menu-item index="/home/users">
+            <el-menu-item :index="'/home/'+second.path" v-for='second in first.children' :key='second.id'>
+              <template slot="title">
                 <i class="el-icon-location"></i>
-                <span>用户信息</span>
-              </el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <!-- 权限管理 -->
-          <el-submenu index="3-2">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>权限管理</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="/home/roles">
-                <i class="el-icon-location"></i>
-                <span>角色列表</span>
-              </el-menu-item>
-              <el-menu-item index="/home/rights">
-                <i class="el-icon-location"></i>
-                <span>权限列表</span>
-              </el-menu-item>
-            </el-menu-item-group>
+                <span>{{second.authName}}</span>
+              </template>
+            </el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -63,7 +46,23 @@
 </template>
 
 <script>
-export default {}
+import { getLeftMenuList } from '@/api/right_api.js'
+export default {
+  data () {
+    return {
+      menuList: []
+    }
+  },
+  mounted () {
+    getLeftMenuList()
+      .then(res => {
+        console.log(res)
+        if (res.data.meta.status === 200) {
+          this.menuList = res.data.data
+        }
+      })
+  }
+}
 </script>
 
 <style lang="less" scoped>

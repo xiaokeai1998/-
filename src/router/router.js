@@ -11,6 +11,10 @@ import Users from '@/views/users/index.vue'
 import Wel from '@/views/welcome.vue'
 import Role from '@/views/right/RoleList.vue'
 import Right from '@/views/right/RightList.vue'
+import Goods from '@/views/goods/Goods.vue'
+import List from '@/views/goods/list.vue'
+import Add from '@/views/goods/add.vue'
+
 // 用户管理
 
 Vue.use(VueRouter)
@@ -55,6 +59,25 @@ var router = new VueRouter({
           name: 'Right',
           path: 'rights',
           component: Right
+        },
+        {
+          name: 'good',
+          path: 'goods',
+          component: Goods,
+          redirect: { name: 'List' },
+          children: [
+            {
+              name: 'List',
+              path: 'lists',
+              component: List
+            },
+            {
+              name: 'Add',
+              path: 'adds',
+              component: Add
+            }
+
+          ]
         }
       ]
     }
