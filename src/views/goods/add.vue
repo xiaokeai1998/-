@@ -61,18 +61,44 @@
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </el-tab-pane>
-        <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
+        <el-tab-pane label="商品内容" name="4">
+            <quill-editor
+            v-model="addFrom.goods_introduce"
+            ref="myQuillEditor"
+            :options="editorOption"
+            style="height:400px;border-bottom:1px solid #6666"
+           >
+        </quill-editor>
+        </el-tab-pane>
       </el-tabs>
       <el-button type="primary" plain class="btn" @click="addGoods">添加商品</el-button>
     </el-form>
+
+    <!-- 富文本框 -->
+
   </div>
 </template>
 
 <script>
 import { getCategoriesGoodsList } from '@/api/categories_api.js'
+import { addGoods } from '@/api/goods_api'
+
+import { quillEditor } from 'vue-quill-editor'
+
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 export default {
+  components: {
+    quillEditor
+  },
   data () {
     return {
+      content: `<p></p><p><br></p><ol><li><strong><em>Or drag/paste an image here.</em></strong>
+      </li><li><strong><em>rerew</em></strong></li><li><strong><em>rtrete</em></strong></li><li>
+      <strong><em>tytrytr</em></strong></li><li><strong><em>uytu</em></strong></li></ol>`,
+      editorOption: {},
+      goods_introduce: '',
       fileList: [],
       cascaderProps: {
         checkStrictly: true,
@@ -87,6 +113,7 @@ export default {
         goods_number: '',
         goods_weight: '',
         goods_cat: '',
+        attrs: [],
         // 用户图片数据，它是一个数组，里面的每一个键和值是一个对象
         pics: []
       },
@@ -106,18 +133,27 @@ export default {
 
     // 添加商品
     addGoods () {
-      console.log(this.addFrom.pics)
+      // console.log(this.addFroms)
+      addGoods(this.addFroms)
+        .then(res => {
+          console.log(res)
+        })
     },
     // 文件上传成功字后的钩子
     handSuccess (response) {
-      console.log(response)
+      // console.log(response)
       // 将当前成功上传的文件添加到数据对象中
       this.addFrom.pics.push({ pic: response.data.tmp_path })
     },
     // 图片移除是的触发
     handleRemove (file, fileList) {
-      console.log(file)
-      console.log(fileList)
+      // console.log(file.response.data.tmp_path)
+      // 查询对应名称的文件对象进行删除
+      for (var i = 0; i < this.addFrom.pics.length; i++) {
+        if (this.addFrom.pics[i].pic === file.response.data.tmp_path) {
+          this.addFrom.pics.splice(i, 1)
+        }
+      }
     },
     // 移除图片是触发的时间
     gteToken () {
@@ -127,7 +163,8 @@ export default {
 
     getCate (value) {
       console.log(value)
-      console.log(this.addFrom.goods_cat)
+      // console.log(this.addFrom.goods_cat)
+      this.addFrom.goods_cat = value.join(',')
     }
   }
 }
